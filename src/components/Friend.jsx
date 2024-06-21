@@ -20,14 +20,14 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const primaryDark = palette.primary.dark;
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
+  
+  const isFriend = friends && friends.length > 0 ? friends.find((friend) => friend._id === friendId) : false;
 
-  const isFriend = [friends].find((friend) => friend._id === friendId);
-  console.log("isFriend",isFriend);
 
   const patchFriend = async () => {
     try {
       const response = await fetch(
-        `https://snapgram-backend-7c1s.onrender.com/users/${_id}/${friendId}`,
+        `http://localhost:3001/users/${_id}/${friendId}`,
         {
           method: "PATCH",
           headers: {
