@@ -9,6 +9,7 @@ import {
   FormControl,
   useTheme,
   useMediaQuery,
+  Badge,
 } from "@mui/material";
 import {
   Message,
@@ -59,7 +60,6 @@ const Navbar = () => {
         >
           Snapgram
         </Typography>
-        
       </FlexBetween>
 
       {/* DESKTOP NAV */}
@@ -72,10 +72,18 @@ const Navbar = () => {
               <LightMode sx={{ color: dark, fontSize: "25px" }} />
             )}
           </IconButton>
-          <IconButton onClick={() => {navigate('/chat')}}>
-          <Message sx={{ fontSize: "25px" }} />
+          <IconButton
+            onClick={() => {
+              navigate("/chat");
+            }}
+          >
+            <Badge color="secondary" badgeContent="10">
+              <Message sx={{ color: dark, fontSize: "25px" }} />
+            </Badge>
           </IconButton>
-          <Notifications sx={{ fontSize: "25px" }} />
+          <Badge color="secondary" badgeContent="50+">
+            <Notifications sx={{ fontSize: "25px" }} />
+          </Badge>
           <Help sx={{ fontSize: "25px" }} />
           <FormControl variant="standard" value={fullName}>
             <Select
@@ -114,7 +122,9 @@ const Navbar = () => {
           </FormControl>
         </FlexBetween>
       ) : (
-        <IconButton onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}>
+        <IconButton
+          onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
+        >
           <Menu />
         </IconButton>
       )}
@@ -127,13 +137,15 @@ const Navbar = () => {
           bottom="0"
           height="100%"
           zIndex="10"
-          maxWidth="500px"
-          minWidth="300px"
+          maxWidth="300px"
+          minWidth="150px"
           backgroundColor={background}
         >
           {/* CLOSE ICON */}
           <Box display="flex" justifyContent="flex-end" p="1rem">
-            <IconButton onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}>
+            <IconButton
+              onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
+            >
               <Close />
             </IconButton>
           </Box>
@@ -146,42 +158,35 @@ const Navbar = () => {
             alignItems="center"
             gap="3rem"
           >
-            <IconButton onClick={() => dispatch(setMode())} sx={{ fontSize: "25px" }}>
+            <IconButton
+              onClick={() => dispatch(setMode())}
+              sx={{ fontSize: "25px" }}
+            >
               {theme.palette.mode === "dark" ? (
                 <DarkMode sx={{ fontSize: "25px" }} />
               ) : (
                 <LightMode sx={{ color: dark, fontSize: "25px" }} />
               )}
             </IconButton>
-            <Message sx={{ fontSize: "25px" }} />
-            <Notifications sx={{ fontSize: "25px" }} />
+            <IconButton
+              onClick={() => {
+                navigate("/chat");
+              }}
+            >
+              <Badge color="secondary" badgeContent="10">
+                <Message sx={{ color: dark, fontSize: "25px" }} />
+              </Badge>
+            </IconButton>
+            <Badge color="secondary" badgeContent="50+">
+              <Notifications sx={{ fontSize: "25px" }} />
+            </Badge>
             <Help sx={{ fontSize: "25px" }} />
-            <FormControl variant="standard" value={fullName}>
-              <Select
-                value={fullName}
-                sx={{
-                  backgroundColor: neutralLight,
-                  width: "150px",
-                  borderRadius: "0.25rem",
-                  p: "0.25rem 1rem",
-                  "& .MuiSvgIcon-root": {
-                    pr: "0.25rem",
-                    width: "3rem",
-                  },
-                  "& .MuiSelect-select:focus": {
-                    backgroundColor: neutralLight,
-                  },
-                }}
-                input={<InputBase />}
-              >
-                <MenuItem key="myprofile" onClick={() => navigate(`/profile/${user._id}`)}>
-                  <AccountBox />Your profile
-                </MenuItem>
-                <MenuItem key="logout" onClick={() => dispatch(setLogout())}>
-                  <Logout />Log Out
-                </MenuItem>
-              </Select>
-            </FormControl>
+            <IconButton onClick={() => navigate(`/profile/${user._id}`)}>
+              <AccountBox sx={{ color: dark, fontSize: "25px" }} />
+            </IconButton>
+            <IconButton onClick={() => dispatch(setLogout())}>
+              <Logout sx={{ color: dark, fontSize: "25px" }} />
+            </IconButton>
           </FlexBetween>
         </Box>
       )}
