@@ -22,12 +22,14 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const medium = palette.neutral.medium;
   
   const isFriend = friends && friends.length > 0 ? friends.find((friend) => friend._id === friendId) : false;
-
+  const host = process.env.REACT_APP_SERVER_URL;
 
   const patchFriend = async () => {
     try {
+      console.log(token);
+     
       const response = await fetch(
-        `https://snapgram-backend-7c1s.onrender.com/users/${_id}/${friendId}`,
+        `${host}/users/${_id}/${friendId}`,
         {
           method: "PATCH",
           headers: {

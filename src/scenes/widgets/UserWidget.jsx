@@ -44,6 +44,7 @@ const UserWidget = ({ userId, picturePath }) => {
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
+  const host = process.env.REACT_APP_SERVER_URL;
 
   const handleManageAccountsClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -55,7 +56,7 @@ const UserWidget = ({ userId, picturePath }) => {
 
   const getUser = async () => {
     try {
-      const response = await fetch(`https://snapgram-backend-7c1s.onrender.com/users/${userId}`, {
+      const response = await fetch(`${host}/users/${userId}`, {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -115,7 +116,7 @@ const UserWidget = ({ userId, picturePath }) => {
       form.append("picturePath", formData.profilePicturePath);
 
   
-      const response = await fetch(`https://snapgram-backend-7c1s.onrender.com/users/${userId}`, {
+      const response = await fetch(`${host}/users/${userId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

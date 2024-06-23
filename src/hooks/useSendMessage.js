@@ -6,20 +6,30 @@ const useSendMessage = () => {
   const [loading, setLoading] = useState(false);
   const { messages, setMessages, selectedConversation } = useConversation();
   const token = useSelector((state) => state.token);
+  const host = process.env.REACT_APP_SERVER_URL;
 
-  const sendMessage = async (message) => {
+  const sendMessage = async ({ text, image }) => {
     setLoading(true);
     try {
-      console.log('Selected Conversation ID:', selectedConversation._id);
-      console.log('Sending message:', message);
-      console.log(token);
-      const res = await fetch(`https://snapgram-backend-7c1s.onrender.com/messages/send/${selectedConversation._id}`, {
+      const url = `${host}/messages/send/${selectedConversation._id}`;
+      let body;
+      let headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      if (image) {
+        body = new FormData();
+        body.append("text", text);
+        body.append("image", image);
+      } else {
+        headers["Content-Type"] = "application/json";
+        body = JSON.stringify({ text });
+      }
+
+      const res = await fetch(url, {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message }),
+        headers,
+        body,
       });
 
       if (!res.ok) {
@@ -29,7 +39,6 @@ const useSendMessage = () => {
 
       const data = await res.json();
       setMessages([...messages, data]);
-      console.log('Message sent successfully:', data);
     } catch (error) {
       console.error('Error sending message:', error.message);
     } finally {

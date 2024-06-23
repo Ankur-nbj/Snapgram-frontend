@@ -8,9 +8,10 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   const posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
+  const host = process.env.REACT_APP_SERVER_URL;
 
   const getPosts = async () => {
-    const response = await fetch("https://snapgram-backend-7c1s.onrender.com/posts", {
+    const response = await fetch(`${host}/posts`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -20,7 +21,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   const getUserPosts = async () => {
     const response = await fetch(
-      `https://snapgram-backend-7c1s.onrender.com/posts/${userId}/posts`,
+      `${host}/posts/${userId}/posts`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },

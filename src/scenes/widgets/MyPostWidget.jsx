@@ -42,6 +42,7 @@ const MyPostWidget = ({ picturePath }) => {
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
+  const host = process.env.REACT_APP_SERVER_URL;
 
   const handlePost = async () => {
     try {
@@ -54,7 +55,7 @@ const MyPostWidget = ({ picturePath }) => {
         formData.append("picturePath", image.name);
       }
   
-      const response = await fetch(`https://snapgram-backend-7c1s.onrender.com/posts`, {
+      const response = await fetch(`${host}/posts`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

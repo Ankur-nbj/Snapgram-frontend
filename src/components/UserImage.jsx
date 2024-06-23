@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 
 const UserImage = ({ image, size="60px" , onClick}) => {
+  const host = process.env.REACT_APP_SERVER_URL;
   return (
     <Box width={size} height={size}  sx={{"&:hover": {cursor: "pointer",},}}>
       <img
@@ -8,7 +9,7 @@ const UserImage = ({ image, size="60px" , onClick}) => {
         width={size}
         height={size}
         alt="user"
-        src={`https://snapgram-backend-7c1s.onrender.com/assets/${image}`}
+        src={`${host}/assets/${image}`}
         onClick={onClick}
       />
     </Box>

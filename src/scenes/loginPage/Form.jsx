@@ -60,6 +60,7 @@ const Form = () => {
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+  const host = process.env.REACT_APP_SERVER_URL;
 
   const register = async (values, onSubmitProps) => {
     try {
@@ -70,7 +71,7 @@ const Form = () => {
       formData.append("picturePath", values.picture.name);
 
       const savedUserResponse = await fetch(
-        "https://snapgram-backend-7c1s.onrender.com/auth/register",
+        `${host}/auth/register`,
         {
           method: "POST",
           body: formData,
@@ -100,7 +101,7 @@ const Form = () => {
 
   const login = async (values, onSubmitProps) => {
     try {
-      const loggedInResponse = await fetch("https://snapgram-backend-7c1s.onrender.com/auth/login", {
+      const loggedInResponse = await fetch(`${host}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),

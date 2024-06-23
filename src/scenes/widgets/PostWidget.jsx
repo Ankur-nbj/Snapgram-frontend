@@ -30,13 +30,13 @@ const PostWidget = ({
   const user = useSelector((state) => state.user); // Ensure this line is present and correct
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
-
+  const host = process.env.REACT_APP_SERVER_URL;
   const { palette } = useTheme();
   const main = palette.neutral.main;
   const primary = palette.primary.main;
 
   const patchLike = async () => {
-    const response = await fetch(`https://snapgram-backend-7c1s.onrender.com/posts/${postId}/like`, {
+    const response = await fetch(`${host}/posts/${postId}/like`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -50,7 +50,7 @@ const PostWidget = ({
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`https://snapgram-backend-7c1s.onrender.com/posts/${postId}`, {
+      const response = await fetch(`${host}/posts/${postId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -68,7 +68,7 @@ const PostWidget = ({
   };
 
   const addComment = async () => {
-    const response = await fetch(`https://snapgram-backend-7c1s.onrender.com/posts/${postId}/comments`, {
+    const response = await fetch(`${host}/posts/${postId}/comments`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -107,7 +107,7 @@ const PostWidget = ({
           height="auto"
           alt="post"
           style={{ borderRadius: '0.75rem', marginTop: '0.75rem' }}
-          src={`https://snapgram-backend-7c1s.onrender.com/assets/${picturePath}`}
+          src={`${host}/assets/${picturePath}`}
         />
       )}
       <FlexBetween mt="0.25rem">

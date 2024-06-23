@@ -5,12 +5,13 @@ const useGetUsers = () => {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const token = useSelector((state) => state.token);
+  const host = process.env.REACT_APP_SERVER_URL;
 
   useEffect(() => {
     const getUsers = async () => {
       setLoading(true);
       try {
-        const res = await fetch("https://snapgram-backend-7c1s.onrender.com/users",{
+        const res = await fetch(`${host}/users`,{
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
         });

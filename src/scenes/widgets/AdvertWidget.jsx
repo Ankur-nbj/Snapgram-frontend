@@ -7,6 +7,7 @@ const AdvertWidget = () => {
   const dark = palette.neutral.dark;
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
+  const host = process.env.REACT_APP_SERVER_URL;
 
   return (
     <>
@@ -27,7 +28,7 @@ const AdvertWidget = () => {
           width="100%"
           height="auto"
           alt="advert"
-          src="https://snapgram-backend-7c1s.onrender.com/assets/Adv2.gif"
+          src={`${host}/assets/Adv2.gif`}
           style={{ borderRadius: "0.5rem", margin: "0.75rem 0" }}
         />
       </a>
@@ -66,7 +67,7 @@ const AdvertWidget = () => {
             width="100%"
             height="auto"
             alt="advert"
-            src="https://snapgram-backend-7c1s.onrender.com/assets/Adv3.gif"
+            src={`${host}/assets/Adv3.gif`}
             style={{ borderRadius: "0.5rem", margin: "0.75rem 0" }}
           />
         </a>
@@ -105,7 +106,7 @@ const AdvertWidget = () => {
           width="100%"
           height="auto"
           alt="advert"
-          src="https://snapgram-backend-7c1s.onrender.com/assets/iNote.gif"
+          src={`${host}/assets/iNote.gif`}
           style={{ borderRadius: "0.5rem", margin: "0.75rem 0" }}
         />
       </a>

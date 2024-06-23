@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, Box } from '@mui/material';
 
 const ImageModal = ({ isImageModalOpen, onClose, path }) => {
+  const host = process.env.REACT_APP_SERVER_URL;
   return (
     <Modal
       open={isImageModalOpen}
@@ -22,7 +23,7 @@ const ImageModal = ({ isImageModalOpen, onClose, path }) => {
         }}
       >
         <img
-          src={`https://snapgram-backend-7c1s.onrender.com/assets/${path}`}
+          src={`${host}/assets/${path}`}
           alt="Full profile"
           style={{
             objectFit: 'cover',

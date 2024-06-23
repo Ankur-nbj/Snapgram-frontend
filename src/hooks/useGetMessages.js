@@ -7,12 +7,12 @@ const useGetMessages = () => {
  const [loading, setLoading] = useState(false);
  const {messages, setMessages, selectedConversation } = useConversation();
  const token = useSelector((state) => state.token)
-
+ const host = process.env.REACT_APP_SERVER_URL;
  useEffect(() => {
   const getMessages = async () => {
    setLoading(true);
    try {
-    const res = await fetch(`https://snapgram-backend-7c1s.onrender.com/messages/${selectedConversation._id}`,{
+    const res = await fetch(`${host}/messages/${selectedConversation._id}`,{
      method: "GET",
      headers: { Authorization: `Bearer ${token}` },
     })
