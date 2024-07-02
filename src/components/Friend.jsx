@@ -1,19 +1,17 @@
 import React, { useState } from "react";
 import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { setFriends } from "state";
-import FlexBetween from "./FlexBetween"; 
+import { useSelector } from "react-redux";
+import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
 import { useNavigate } from "react-router-dom";
 import ImageModal from "./ImageModal";
+import usePatchFriend from "hooks/usePatchFriend"; // Adjust the path as necessary
 
 const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { _id } = useSelector((state) => state.user);
-  const token = useSelector((state) => state.token);
-  const friends = useSelector((state)=>state.user.friends);
+  const friends = useSelector((state) => state.user.friends);
 
   const { palette } = useTheme();
   const primaryLight = palette.primary.light;
@@ -22,30 +20,8 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const medium = palette.neutral.medium;
   
   const isFriend = friends && friends.length > 0 ? friends.find((friend) => friend._id === friendId) : false;
-  const host = process.env.REACT_APP_SERVER_URL;
 
-  const patchFriend = async () => {
-    try {
-      console.log(token);
-     
-      const response = await fetch(
-        `${host}/users/${_id}/${friendId}`,
-        {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-
-      const data = await response.json();
-      dispatch(setFriends({ friends: data }));
-    } catch (error) {
-      console.error("Error updating friend status:", error);
-    }
-  };
+  const patchFriend = usePatchFriend();
 
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
@@ -88,7 +64,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
         </FlexBetween>
         {friendId !== _id && (
           <IconButton
-            onClick={patchFriend}
+            onClick={() => patchFriend(friendId)}
             sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
           >
             {isFriend ? (
