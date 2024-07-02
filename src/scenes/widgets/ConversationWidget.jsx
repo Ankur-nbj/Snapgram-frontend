@@ -8,16 +8,8 @@ import {
   useTheme,
   CircularProgress,
   Avatar,
-  Popper,
 } from "@mui/material";
-import {
-  AddPhotoAlternateOutlined,
-  Send,
-  Videocam,
-  Close,
-  QuestionAnswerOutlined,
-  EmojiEmotionsOutlined,
-} from "@mui/icons-material";
+import { AddPhotoAlternateOutlined, Send, Videocam, Close, QuestionAnswerOutlined } from "@mui/icons-material";
 import WidgetWrapper from "components/WidgetWrapper";
 import Message from "components/Message";
 import useConversation from "../../zustand/useConversation";
@@ -27,28 +19,21 @@ import useSendMessage from "../../hooks/useSendMessage";
 import FlexBetween from "components/FlexBetween";
 import useListenMessages from "hooks/useListenMessages";
 import MessageSkeleton from "components/MessageSkeleton";
-import { useSocketContext } from "context/SocketContext";
-import EmojiPicker from "emoji-picker-react";
+import {useSocketContext} from "context/SocketContext";
+
 
 const ConversationWidget = () => {
   const theme = useTheme();
   useListenMessages();
-  const [open, setOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null); // New state for anchor element
   const { selectedConversation } = useConversation();
   const { messages, loading: messagesLoading } = useGetMessages();
   const { sendMessage, loading: sendLoading } = useSendMessage();
   const [messageText, setMessageText] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const lastMessageRef = useRef();
-  const { onlineUsers } = useSocketContext();
-  const isOnline = onlineUsers.includes(selectedConversation?._id);
-  const host = "http://localhost:3001";
-
-  const handleEmojiClick = (e) => {
-    setMessageText((prev) => prev + e.emoji);
-    setOpen(false);
-  };
+  const { onlineUsers} = useSocketContext();
+  const isOnline = onlineUsers.includes(selectedConversation?._id)
+  const host = process.env.REACT_APP_SERVER_URL;
 
   useEffect(() => {
     setTimeout(() => {
@@ -76,11 +61,6 @@ const ConversationWidget = () => {
     await sendMessage(messageData);
     setMessageText("");
     setSelectedFile(null);
-  };
-
-  const handleEmojiButtonClick = (event) => {
-    setAnchorEl(event.currentTarget);
-    setOpen((prev) => !prev);
   };
 
   return (
@@ -114,29 +94,26 @@ const ConversationWidget = () => {
                 sx={{ width: "40px", height: "40px", mx: "12px" }}
               />
               <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Typography
-                  variant="title2"
-                  sx={{ color: "#FFFFFF", fontWeight: "bold" }}
-                >
-                  {selectedConversation.firstName} {selectedConversation.lastName}
-                </Typography>
-                {isOnline && (
+              <Typography
+                variant="title2"
+                sx={{ color: "#FFFFFF", fontWeight: "bold" }}
+              >
+                {selectedConversation.firstName} {selectedConversation.lastName}
+              </Typography>
+              {isOnline && (
                   <Typography
                     variant="caption"
-                    sx={{
-                      color: "grey",
-                      textDecoration: "underline",
+                    sx={{ color: "grey", textDecoration: "underline",
                       transition: "opacity 0.3s ease-in-out",
-                      opacity: isOnline ? 1 : 0,
-                    }}
+                      opacity: isOnline ? 1 : 0 }} 
                   >
                     Online
                   </Typography>
                 )}
               </Box>
             </FlexBetween>
-            <IconButton sx={{ mx: "0.5rem", color: "white" }}>
-              <Videocam sx={{ fontSize: "30px" }} />
+            <IconButton sx={{mx:"0.5rem", color: "white"}}>
+              <Videocam sx={{ fontSize: "30px" }}/>
             </IconButton>
           </FlexBetween>
 
@@ -180,11 +157,9 @@ const ConversationWidget = () => {
                 fontWeight="bold"
                 fontSize="clamp(0.5rem, 0.75rem, 1rem)"
               >
-                {messagesLoading ? (
-                  <MessageSkeleton />
-                ) : (
-                  "Send a message to start Conversation"
-                )}
+                {messagesLoading
+                  ? <MessageSkeleton/>
+                  : "Send a message to start Conversation"}
               </Typography>
             )}
           </Box>
@@ -198,24 +173,12 @@ const ConversationWidget = () => {
               value={messageText}
               onChange={(e) => setMessageText(e.target.value)}
               InputProps={{
-                startAdornment: (
+                startAdornment: selectedFile && (
                   <InputAdornment position="start">
-                    <IconButton onClick={handleEmojiButtonClick}>
-                      <EmojiEmotionsOutlined
-                        sx={{ color: theme.palette.neutral.mediumMain }}
-                      />
+                    <Typography>{selectedFile.name}</Typography>
+                    <IconButton size="small" onClick={handleFileRemove}>
+                      <Close />
                     </IconButton>
-                    <Popper open={open} anchorEl={anchorEl} placement="top-start" >
-                      <EmojiPicker onEmojiClick={handleEmojiClick} sx={{height: "100px"}} />
-                    </Popper>
-                    {selectedFile && (
-                      <>
-                        <Typography>{selectedFile.name}</Typography>
-                        <IconButton size="small" onClick={handleFileRemove}>
-                          <Close />
-                        </IconButton>
-                      </>
-                    )}
                   </InputAdornment>
                 ),
                 endAdornment: (
@@ -234,7 +197,12 @@ const ConversationWidget = () => {
                         />
                       </IconButton>
                     </label>
-                    <IconButton size="large" edge="end" aria-label="send" type="submit">
+                    <IconButton
+                      size="large"
+                      edge="end"
+                      aria-label="send"
+                      type="submit"
+                    >
                       {sendLoading ? <CircularProgress size={24} /> : <Send />}
                     </IconButton>
                   </InputAdornment>
@@ -274,8 +242,8 @@ const NoChatSelected = () => {
       <Typography fontWeight="bold" fontSize="clamp(0.75rem, 1rem, 1.5rem)">
         Select a chat to start messaging
       </Typography>
-      <IconButton sx={{ fontWeight: "bold", fontSize: "400px", color: "dark" }}>
-        <QuestionAnswerOutlined />
+      <IconButton sx={{fontWeight:"bold", fontSize:"400px", color: "dark"}} >
+      <QuestionAnswerOutlined  />
       </IconButton>
     </Box>
   );

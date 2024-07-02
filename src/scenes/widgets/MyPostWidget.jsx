@@ -92,7 +92,7 @@ const MyPostWidget = ({ picturePath }) => {
     };
 
   return (
-    <WidgetWrapper>
+    <WidgetWrapper mb="1.5rem">
       <Collapse in={openAlert}>
           <Alert
              severity={alertType}

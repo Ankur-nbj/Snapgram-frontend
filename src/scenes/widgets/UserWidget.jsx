@@ -5,6 +5,9 @@ import {
   LocationOnOutlined,
   WorkOutlineOutlined,
   DeleteOutlined,
+  PersonRemoveOutlined,
+  PersonAddOutlined,
+  Telegram,
 } from "@mui/icons-material";
 import {
   Box,
@@ -25,6 +28,7 @@ import { useNavigate } from "react-router-dom";
 import ImageModal from "components/ImageModal";
 import EditProfile from "components/EditProfile";
 import { deleteUserThunk } from "state/authThunks";
+import useConversation from "../../zustand/useConversation";
 
 const UserWidget = ({ userId, picturePath }) => {
   const [user, setUser] = useState(null);
@@ -36,11 +40,13 @@ const UserWidget = ({ userId, picturePath }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = useSelector((state) => state.token);
+  const { _id } = useSelector((state) => state.user);
   const dark = palette.neutral.dark;
   const medium = palette.neutral.medium;
   const main = palette.neutral.main;
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const { setSelectedConversation } = useConversation();
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
@@ -97,6 +103,11 @@ const UserWidget = ({ userId, picturePath }) => {
     friends,
   } = user;
 
+
+  const handleChat = () => {
+    setSelectedConversation(user);
+    navigate('/chat');
+  }
   const handleEditProfileClick = () => {
     setIsEditModalOpen(true);
     handleClose();
@@ -181,9 +192,15 @@ const UserWidget = ({ userId, picturePath }) => {
             <Typography color={medium}>{friends?.length} friends</Typography>
           </Box>
         </FlexBetween>
+        {userId!=_id ?
+        <IconButton sx={{color:{dark}}} onClick={handleChat}>
+          <Telegram sx={{fontSize:'25px'}}/>
+        </IconButton>
+        :
         <IconButton onClick={handleManageAccountsClick}>
           <ManageAccountsOutlined />
         </IconButton>
+        }
         <Popover
           id={id}
           open={open}

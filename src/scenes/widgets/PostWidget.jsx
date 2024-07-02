@@ -82,7 +82,7 @@ const PostWidget = ({
   };
 
   return (
-    <WidgetWrapper m="2rem 0">
+    <WidgetWrapper m="0 0 1rem 0">
     <Collapse in={openAlert} sx={{ gridColumn: "span 4" }}>
       <Alert
         severity={alertType}
